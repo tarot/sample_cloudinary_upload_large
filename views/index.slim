@@ -1,0 +1,37 @@
+doctype html
+html
+  head
+    script src="lib/jquery/dist/jquery.js"
+    script src="lib/blueimp-file-upload/js/vendor/jquery.ui.widget.js"
+    script src="lib/blueimp-file-upload/js/jquery.fileupload.js"
+    script src="lib/cloudinary/js/jquery.cloudinary.js"
+  body
+    div: input#file disabled=true type="file" name="file" data-cloud_name=@cloud_name
+    div: button#button disabled=true upload
+    pre#progress
+    coffee:
+      $file = $('#file')
+      $button = $('#button')
+      $progress = $('#progress')
+
+      $('#file').cloudinary_fileupload
+        maxFileSize: 2 * 1000 * 1000 * 1000
+        maxChunkSize: 20 * 1000 * 1000
+        resource_type: 'raw'
+        autoUpload: false
+        cloud_name: $('#file').data('cloud_name')
+      .on 'fileuploadadd', (event, data) ->
+        $button.data 'fileupload', data
+        .prop 'disabled', false
+      .on 'fileuploadprogressall', (event, data) ->
+        $progress.text "#{(data.loaded * 100 / data.total).toFixed(2)}%"
+      .prop 'disabled', false
+      $button.on 'click', ->
+        $.post '/sign', timestamp: Math.floor(new Date().getTime() / 1000)
+        .then (result) =>
+          $('#file').fileupload('option', 'formData', result)
+          $button.data('fileupload').submit()
+        .then (result) ->
+          $progress.text JSON.stringify(result, null, 2)
+        .fail (xhr) ->
+          $progress.text JSON.stringify(xhr.responseJSON, null, 2)

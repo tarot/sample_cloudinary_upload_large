@@ -1,0 +1,6 @@
+{
+  "name": "sample_cloudinary_upload_large",
+  "dependencies": {
+    "cloudinary": "~1.0.24"
+  }
+}
