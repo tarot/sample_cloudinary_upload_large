@@ -15,8 +15,8 @@ html
       $progress = $('#progress')
 
       $('#file').cloudinary_fileupload
-        maxFileSize: 2 * 1000 * 1000 * 1000
-        maxChunkSize: 20 * 1000 * 1000
+        maxFileSize: 20 * Math.pow(2, 20)
+        maxChunkSize: 5 * Math.pow(2, 20)
         resource_type: 'raw'
         autoUpload: false
         cloud_name: $('#file').data('cloud_name')
