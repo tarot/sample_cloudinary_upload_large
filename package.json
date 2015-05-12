@@ -1,0 +1,9 @@
+{
+  "name": "sample_cloudinary_upload_large",
+  "scripts": {
+    "postinstall": "bower install"
+  },
+  "dependencies": {
+    "bower": "^1.4.1"
+  }
+}
